@@ -165,4 +165,60 @@ public class L2024130117_11_Test {
         assertEquals(expected(exp), normalize(result));
         checkProperties(result);
     }
+
+    /*
+     * 测试目的：验证两侧都有重复元素时只返回一个三元组（补充去重测试）
+     * 测试用例：[-1,-1,0,1,1]，期望 [[-1,0,1]]
+     */
+    @Test
+    public void testDuplicatesOnBothSides() {
+        List<List<Integer>> result = solution.threeSum(new int[] {-1, -1, 0, 1, 1});
+        assertEquals(expected(new int[][] {{-1, 0, 1}}), normalize(result));
+    }
+
+    /*
+     * 测试目的：验证只有负数和零时无解（无效等价类，补充）
+     * 测试用例：[-3,-2,-1,0,0]，期望 []
+     */
+    @Test
+    public void testNegativesAndZerosOnly() {
+        assertTrue(solution.threeSum(new int[] {-3, -2, -1, 0, 0}).isEmpty());
+    }
+
+    /*
+     * 测试目的：验证大规模输入（3000 个元素）结果正确且不超时
+     * 测试用例：3000 个 0，期望 [[0,0,0]]
+     */
+    @Test(timeout = 2000)
+    public void testLargeInputAllZero() {
+        int[] nums = new int[3000];
+        List<List<Integer>> result = solution.threeSum(nums);
+        assertEquals(expected(new int[][] {{0, 0, 0}}), normalize(result));
+    }
+
+    /*
+     * 测试目的：与暴力解法对拍，验证互不相同的元素时三元组个数一致
+     * 测试用例：-150..149 共 300 个互不相同的整数，与三重循环计数结果比较
+     */
+    @Test
+    public void testAgainstBruteForce() {
+        int n = 300;
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = i - 150;
+        }
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        count++;
+                    }
+                }
+            }
+        }
+        List<List<Integer>> result = solution.threeSum(nums.clone());
+        assertEquals(count, result.size());
+        checkProperties(result);
+    }
 }

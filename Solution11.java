@@ -31,7 +31,7 @@ import java.util.Arrays;
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         int n = nums.length;
-        Arrays.sort(nums);
+        Arrays.sort(nums); // Review note: this sorts the caller array in place
         List<List<Integer>> ans = new ArrayList<List<Integer>>();
         // 枚举 a
         for (int first = 0; first < n; ++first) {
